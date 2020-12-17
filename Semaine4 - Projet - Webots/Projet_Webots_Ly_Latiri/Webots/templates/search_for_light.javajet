@@ -1,0 +1,71 @@
+<%@ jet package="MrRobot.generator" class="SearchForLight" imports="MrRobot.*" %>
+/* Welcome to the search for light mission. */
+
+<% RobotConfiguration config = (RobotConfiguration) argument;%><% Robot robot = config.getRobot();%><%Behavior escape = config.getMission().getBehaviors().get(0);%><%Behavior home = config.getMission().getBehaviors().get(1);%>
+import com.cyberbotics.webots.controller.Robot;
+import com.cyberbotics.webots.controller.DistanceSensor;
+import com.cyberbotics.webots.controller.LightSensor;
+import com.cyberbotics.webots.controller.Motor;
+
+public class SearchForLight {
+
+	public static void main(String[] args) {
+	
+		Robot robot = new Robot();
+		
+		double MAX_SPEED = <%= config.getMAX_SPEED() %>;
+		
+		int TIME_STEP = <%= config.getTIME_STEP()%>;
+		<%int size = config.getMission().getBehaviors().get(0).getSensors().size();%>
+		DistanceSensor[] ps = new DistanceSensor[<%=size%>];
+		String[] psNames = new String[<%=size%>];
+		
+		LightSensor[] ls = new LightSensor[<%=size%>];
+		String[] lsNames = new String[<%=size%>];
+			<%for (Behavior b : config.getMission().getBehaviors()) { for(int i = 0; i< b.getSensors().size(); i++) {Sensor s = b.getSensors().get(i);if(s instanceof DistanceSensor) {%>
+		psNames[<%=i%>] = "<%=s.getName()%>";<%}if(s instanceof LightSensor) {%>
+		lsNames[<%=i%>] = "<%=s.getName()%>"; <%}}}%>
+		
+		for (int i = 0; i < 8; i++) {
+	        ps[i] = robot.getDistanceSensor(psNames[i]);
+	        ps[i].enable(TIME_STEP);
+	      
+	        ls[i] = robot.getLightSensor(lsNames[i]);
+	        ls[i].enable(TIME_STEP);
+	    }
+	    <%for (Actuator act : config.getRobot().getActuators()) {if(act instanceof LeftMotor) {%>
+		Motor leftMotor = robot.getMotor("<%=act.getName()%>");
+	    	<%}if(act instanceof RightMotor) {%>
+	    Motor rightMotor = robot.getMotor("<%=act.getName()%>");<%}}%>   
+		
+		leftMotor.setPosition(Double.POSITIVE_INFINITY);
+		rightMotor.setPosition(Double.POSITIVE_INFINITY);
+		leftMotor.setVelocity(0.0);
+		rightMotor.setVelocity(0.0);
+		 
+		while (robot.step(TIME_STEP) != -1) {
+			double[] psValues = {0, 0, 0, 0, 0, 0, 0, 0};
+		 	double[] lsValues = {0, 0, 0, 0, 0, 0, 0, 0};
+		 	
+		    for (int i = 0; i < 8 ; i++){
+		        psValues[i] = ps[i].getValue();
+		        lsValues[i] = ls[i].getValue();
+		 	}
+		 	
+		 	boolean right_obstacle =<%=robot.getRightObstacle()%>
+	       	boolean left_obstacle =<%=robot.getLeftObstacle()%>
+		    boolean right_light =<%=robot.getRightLight()%>
+		    boolean left_light = <%=robot.getLeftLight()%>
+		    double leftSpeed  = 0.5 * MAX_SPEED;
+    		double rightSpeed = 0.5 * MAX_SPEED;
+    		
+    		if (left_obstacle || right_obstacle){
+		    	<%=escape.display()%>
+		    }else{
+		    	<%=home.display()%>
+			}
+		    leftMotor.setVelocity(leftSpeed);
+    		rightMotor.setVelocity(rightSpeed);
+		 }
+	}
+}

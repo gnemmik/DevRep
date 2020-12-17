@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot:RobotConfiguration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:robot="http://robot" xsi:schemaLocation="http://robot robot.ecore" MAX_SPEED="6.28" TIME_STEP="64">
+  <robot name="EPuck">
+    <actuators xsi:type="robot:LeftMotor" name="left wheel motor"/>
+    <actuators xsi:type="robot:RightMotor" name="right wheel motor"/>
+  </robot>
+  <mission name="SearchForLight">
+    <behaviors xsi:type="robot:Escape">
+      <sensors xsi:type="robot:DistanceSensor" name="ps0"/>
+      <sensors xsi:type="robot:DistanceSensor" name="ps1"/>
+      <sensors xsi:type="robot:DistanceSensor" name="ps2"/>
+      <sensors xsi:type="robot:DistanceSensor" name="ps3"/>
+      <sensors xsi:type="robot:DistanceSensor" name="ps4"/>
+      <sensors xsi:type="robot:DistanceSensor" name="ps5"/>
+      <sensors xsi:type="robot:DistanceSensor" name="ps6"/>
+      <sensors xsi:type="robot:DistanceSensor" name="ps7"/>
+    </behaviors>
+    <behaviors xsi:type="robot:Home">
+      <sensors xsi:type="robot:LightSensor" name="ls0"/>
+      <sensors xsi:type="robot:LightSensor" name="ls1"/>
+      <sensors xsi:type="robot:LightSensor" name="ls2"/>
+      <sensors xsi:type="robot:LightSensor" name="ls3"/>
+      <sensors xsi:type="robot:LightSensor" name="ls4"/>
+      <sensors xsi:type="robot:LightSensor" name="ls5"/>
+      <sensors xsi:type="robot:LightSensor" name="ls6"/>
+      <sensors xsi:type="robot:LightSensor" name="ls7"/>
+    </behaviors>
+  </mission>
+</robot:RobotConfiguration>

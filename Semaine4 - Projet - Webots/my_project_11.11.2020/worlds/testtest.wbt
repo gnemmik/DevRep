@@ -1,0 +1,23 @@
+#VRML_SIM R2020b utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation -0.3732681685071162 0.8164621777144148 0.4405228560939586 1.9172808642625372
+  position 1.6265537725771548 1.9464895251695682 -0.01903383479738246
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+  luminosity 0
+}
+RectangleArena {
+}
+E-puck {
+  translation 0.2011109733201488 -6.395955534463545e-05 0.28916481311581504
+  rotation 6.819199628484232e-05 0.9999999440797647 -0.00032739932644929395 2.738914242101384
+  controller "EPuckAvoidCollision"
+}
+FloorLight {
+  translation -0.384742 -1.41 -0.325544
+}

@@ -1,0 +1,85 @@
+grammar org.xtext.webots.mydsl.MyDsl with org.eclipse.xtext.common.Terminals
+
+generate myDsl "http://www.xtext.org/webots/mydsl/MyDsl"
+
+RobotConfiguration:
+	'RobotConfiguration'
+	'{'
+		('MAX_SPEED' ':' MAX_SPEED=EDouble)?
+		('TIME_STEP' ':' TIME_STEP=EInt)?
+		'robot' ':' robot=Robot
+		('mission' ':' mission=Mission)?
+	'}';
+
+Actuator:
+	LeftMotor | RightMotor;
+
+Behavior:
+	Escape | Home;
+
+Sensor:
+	DistanceSensor | LightSensor;
+
+Robot:
+	{Robot}
+	'Robot'
+	name=EString
+	'{'
+		('actuators' ':' actuators+=Actuator ( "," actuators+=Actuator)*)?
+	'}';
+
+Mission:
+	(finished?='finished')?
+	'Mission'
+	name=EString
+	'{'
+		'behaviors' ':' behaviors+=Behavior ( "," behaviors+=Behavior)* 
+	'}';
+
+LeftMotor:
+	{LeftMotor}
+	'LeftMotor'
+	name=EString;
+
+RightMotor:
+	{RightMotor}
+	'RightMotor'
+	name=EString;
+
+Escape:
+	{Escape}
+	'Escape'
+	'{'
+		('sensors' ':' sensors+=Sensor ( "," sensors+=Sensor)* )?
+	'}';
+
+Home:
+	{Home}
+	'Home'
+	'{'
+		('sensors' ':' sensors+=Sensor ( "," sensors+=Sensor)* )?
+	'}';
+
+DistanceSensor:
+	{DistanceSensor}
+	'DistanceSensor'
+	name=EString;
+
+LightSensor:
+	{LightSensor}
+	'LightSensor'
+	name=EString;
+	
+
+EDouble:
+	'-'? INT? '.' INT (('E'|'e') '-'? INT)?;
+
+EInt:
+	'-'? INT;
+
+EBoolean:
+	'true' | 'false';
+	
+
+EString:
+	STRING | ID;
